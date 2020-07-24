@@ -1,4 +1,5 @@
 {
+    "server_name": "generic_server_name",
     "superusers": [
         123123123123123
     ],
