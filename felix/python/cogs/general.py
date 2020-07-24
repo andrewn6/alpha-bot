@@ -9,7 +9,7 @@ Commands:
      ├ ask              how to ask question on the server
      ├ run              how to use felix run
      └ sticker          how to apply EM's stickers
-    links           make the bot post links to the engineerman github pages
+    links           make the bot post useful links
     memberinfo      provide information about the given member
     question        ask a question which the bot will answer using wolframalpha
     urbandictionary look up a word on urbandictionary.com
@@ -295,54 +295,14 @@ class General(commands.Cog, name='General'):
                   color=0x2ECC71)
         await ctx.send(embed=e)
 
-    @howto.command(
-        name='sticker',
-        aliases=['stickers', 'apply-stickers']
-    )
-    async def sticker(self, ctx):
-        """Show help with applying stickers"""
-        sticker_instructions = (
-            "To ensure your sticker will hold on for a while, we have to"
-            " prepare the surface of the device. Get a paper towel or rag and "
-            "rubbing alcohol or glass cleaner. Apply a bit of your cleaner of your "
-            "choice and clean of any dust, fingerprints and smudges. Then grab new "
-            "paper towel any dry the surface. \n"
-            "Get your sticker and **peel off the back the side**, line your sticker "
-            "and press the sticker against the surface. Try to get air pockers out "
-            "sticker. Now peel off the front side carefully while checking no letters"
-            " have sticked on the front peel. \n And boom, you are done."
-            "\n\n**Getting EM stickers**\n"
-            "EngineerMan\'s stickers are limited edition, he usually announces when "
-            "new batch is coming out. Stay tuned for more stickers coming out soon."
-
-        )
-        e = Embed(title='Applying stickers',
-                  description=sticker_instructions,
-                  color=0x2ECC71)
-        await ctx.send(embed=e)
-
     @commands.command(
         name='links',
         aliases=['urls', 'sauce', 'source'],
     )
     async def links(self, ctx):
-        """Show links to all things EngineerMan"""
-        links = (
-            '• Youtube: <https://www.youtube.com/engineerman>' +
-            '\n• Discord: <https://engineerman.org/discord>' +
-            '\n• EMKC: <https://emkc.org/>' +
-            '\n• EMKC Snippets: <https://emkc.org/snippets>' +
-            '\n• EMKC Challenges: <https://emkc.org/challenges>' +
-            '\n• Github Youtube: <https://github.com/engineer-man/youtube-code>' +
-            '\n• Github EMKC: <https://github.com/engineer-man/emkc>' +
-            '\n• Github Felix: <https://github.com/engineer-man/felix>' +
-            '\n• Github Piston: <https://github.com/engineer-man/piston>' +
-            '\n• Github Piston-Bot: <https://github.com/engineer-man/piston-bot>' +
-            '\n• Twitter: <https://twitter.com/_EngineerMan>' +
-            '\n• Facebook: <https://www.facebook.com/engineermanyt>' +
-            '\n• Reddit: <https://www.reddit.com/r/engineerman/>' +
-            '\n• Reddit Resources: <https://www.reddit.com/r/engineerman/search/?q=flair%3AResource&restrict_sr=1>'
-        )
+        """Show helpful links"""
+        links = '\n'.join(self.client.urls)
+        if not links: return
         e = Embed(
             title='Links',
             description=links,
@@ -351,48 +311,21 @@ class General(commands.Cog, name='General'):
         await ctx.send(embed=e)
 
     @commands.command(
-        name='faq'
+        name='rules'
     )
-    async def faq(self, ctx):
-        """Show answers to frequently asked questions"""
+    async def rules(self, ctx):
+        """Show the rules of the server"""
         embed = Embed(color=0x2ECC71)
-        embed.set_author(name='Frequently Asked Questions')
-        questions = {
-            'What do you do professionally?':
-                'In addition to YouTube, Engineer Man works on various client '
-                'projects and oversees several projects.',
-            'How long have you been programming?':
-                'About ' + str(dt.now().year - 1994) + ' years',
-            'What distro and editor do you use?':
-                'Distro: Xubuntu, Editor: Atom',
-            'I want to get into programming, how should I get started?':
-                'First, figure out what sort of programming interests you, '
-                'such as web, desktop, game, systems, etc. '
-                'From there, choose a language that relates to that area and '
-                'begin reviewing documentation, reading tutorials, and '
-                'watching videos. Finally, start creating your own projects.',
-            'What is the best way to learn Language X':
-                'Most languages are similar in the types of things they '
-                'accomplish, where they differ is in how they accomplish them. '
-                'If you\'re new to programming, it\'s important to learn '
-                'syntax first. After that, learning that language\'s standard '
-                'library is a good use of time. Beyond that, it\'s just '
-                'experimenting with the language and working on projects in '
-                'that language.',
-            'How can I stay focused/prevent burn out?':
-                'The best way is to try to finish something, anything, even '
-                'if it\'s not as complete as you want. Finishing things is '
-                'satisfying, and once you do you\'ll be more motivated to '
-                'improve what you have. Allowing a project to drone on '
-                'forever without finishing is a way to get bored with it.'
-        }
-        for question, answer in questions.items():
-            embed.add_field(
-                name=question,
-                value=answer,
-                inline=False
-            )
-        await ctx.send(embed=embed)
+        embed.set_author(name='Server Rules')
+        rules = self.client.rules
+        if not rules: return
+        e = Embed(
+            title='Rules',
+            description=rules,
+            color=0x2ECC71
+        )
+        await ctx.send(embed=e)
+
     # ------------------------------------------------------------------------
 
     @commands.group(

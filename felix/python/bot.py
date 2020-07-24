@@ -27,6 +27,10 @@ class Felix(Bot):
         self.session = None
         with open('../config.json') as conffile:
             self.config = json.load(conffile)
+        with open("../urls.txt") as urlsfile:
+            self.urls = urlsfile.readlines()
+        with open("../rules.txt") as rulesfile:
+            self.rules = rulesfile.read()
         self.last_errors = []
 
     async def start(self, *args, **kwargs):
