@@ -33,6 +33,10 @@ class AlphaBot(commands.Bot):
         self.config = Config().load()
 
 
+    async def on_ready(self):
+        log.info(f"{self.user} is in!")
+
+
     async def get_context(self, message, *, cls=AlphaCtx):
         return await super().get_context(message, cls=cls)
 
