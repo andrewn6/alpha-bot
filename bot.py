@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Alphabet Discord Bot
 
