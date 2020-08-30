@@ -1,10 +1,24 @@
-from discord.ext import commands
+"""
+Alphabet Discord Bot
+
+This bot helps manage all necessary administration and
+automation for the Alphabet Discord server.
+
+Author(s):
+Pyro      - https://github.com/Pyroseza
+Agent     - https://github.com/solidassassin
+"""
+
+
 from aiohttp import ClientSession
 from utils.config import Config
 from utils.context import AlphaCtx
 
 
 class AlphaBot(commands.Bot):
+    """
+    The main bot class where are the magic happens
+    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,9 +41,22 @@ class AlphaBot(commands.Bot):
         await super().close()
 
 
+# create the alphabot instance
 bot = AlphaBot(
     command_prefix=commands.when_mentioned_or("alpha ", "Alpha "),
     case_insensitive=True
 )
+
+
+@bot.event
+async def on_ready():
+    main_id = bot.config.get('main_guild')
+    bot.main_guild = bot.get_guild(main_id) or bot.guilds[0]
+    print('\nActive in these guilds/servers:')
+    [print(g.name) for g in bot.guilds]
+    print('\nMain guild:', bot.main_guild.name)
+    print('\nAlphabot started successfully')
+    return True
+
 
 bot.run()
