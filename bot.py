@@ -11,6 +11,8 @@ Agent     - https://github.com/solidassassin
 
 
 from aiohttp import ClientSession
+from discord.ext import commands
+from pathlib import Path
 from utils.config import Config
 from utils.context import AlphaCtx
 import logging
@@ -40,9 +42,30 @@ class AlphaBot(commands.Bot):
     async def get_context(self, message, *, cls=AlphaCtx):
         return await super().get_context(message, cls=cls)
 
+    @property
+    def module_list(self):
+        m = list(Path("cogs").glob("*.py"))
+        all_cogs = [f"cogs.{i.name}"[:-3] for i in m]
+        return all_cogs
+
+
+    async def load_modules(self):
+        _output = []
+        for cog in self.module_list:
+            try:
+                self.load_extension(cog)
+                _output.append(f"[{cog}] loaded")
+            except commands.ExtensionAlreadyLoaded:
+                _output.append(f"[{cog}] already loaded")
+            except commands.ExtensionNotLoaded:
+                _output.append(f"[{cog}] not loaded")
+                log.exception(f"Failed to load {cog}")
+        return "\n".join(_output)
+
 
     async def start(self, *args, **kwargs):
         self.session = ClientSession()
+        await self.load_modules()
         token = self.config.get("token")
         # await super().start(*args, **kwargs)
         await super().start(token)
