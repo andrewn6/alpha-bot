@@ -13,6 +13,14 @@ Agent     - https://github.com/solidassassin
 from aiohttp import ClientSession
 from utils.config import Config
 from utils.context import AlphaCtx
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s: %(name)s -> %(message)s",
+    datefmt="%H:%M:%S",
+)
+log = logging.getLogger(__name__)
 
 
 class AlphaBot(commands.Bot):
