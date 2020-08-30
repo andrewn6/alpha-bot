@@ -2,7 +2,7 @@ import config
 
 from discord.ext import commands
 from aiohttp import ClientSession
-from cogs.utils.context import AlphaCtx
+from utils.context import AlphaCtx
 
 
 class AlphaBot(commands.Bot):
@@ -11,7 +11,7 @@ class AlphaBot(commands.Bot):
 
     @property
     def config(self):
-        return config 
+        return config
 
     async def get_context(self, message, *, cls=AlphaCtx):
         return await super().get_context(message, cls=cls)
