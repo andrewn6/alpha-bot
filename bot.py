@@ -68,3 +68,4 @@ async def on_ready():
 
 
 bot.run()
+print('Alphabot has terminated')
