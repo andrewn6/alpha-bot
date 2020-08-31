@@ -5,8 +5,8 @@ from os import path
 class Config():
 
 
-    def __init__(self):
-        self.conf_file = 'config.json'
+    def __init__(self, filename='config.json'):
+        self.conf_file = filename
         if not path.isfile(self.conf_file):
             raise FileNotFoundError
 
