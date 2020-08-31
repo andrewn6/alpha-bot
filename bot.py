@@ -68,7 +68,7 @@ class AlphaBot(commands.Bot):
         await self.load_modules()
         token = self.config.get("token")
         # await super().start(*args, **kwargs)
-        await super().start(token)
+        await super().start(token, *args, **kwargs)
 
 
     async def close(self):
