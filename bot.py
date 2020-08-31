@@ -67,6 +67,8 @@ class AlphaBot(commands.Bot):
         self.session = ClientSession()
         await self.load_modules()
         token = self.config.get("token")
+        if not token:
+            raise KeyError("Token not found in config!")
         # await super().start(*args, **kwargs)
         await super().start(token, *args, **kwargs)
 
