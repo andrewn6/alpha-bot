@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 class AlphaBot(commands.Bot):
     """
-    The main bot class where are the magic happens
+    The main bot class where all the magic happens
     """
 
     def __init__(self, *args, **kwargs):
