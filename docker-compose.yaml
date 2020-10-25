@@ -7,10 +7,12 @@ services:
     command: bash -c "cd /app && python3 -u bot.py"
     restart: always
     deploy:
+      mode: replicated
+      replicas: 3
       resources:
         limits:
           cpus: "0.50"
-          memory: 50M
+          memory: 50M      
         reservations:
           cpus: "0.25"
           memory: 20M 
