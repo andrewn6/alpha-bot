@@ -1,5 +1,6 @@
 {
     "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "main_guild": "**_AlphaBet_**",
-    "admin_roles": [000000000000000000]
+    "admin_roles": [000000000000000000],
+    "prefix": "alpha"
 }

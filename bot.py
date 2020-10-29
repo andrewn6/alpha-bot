@@ -88,8 +88,10 @@ def main():
     log = logging.getLogger(__name__)
 
     # create the alphabot instance
+    bot_prefix = Config().load().get("prefix", "alpha")+" "
+    bot_Prefix = bot_prefix.capitalize()
     bot = AlphaBot(
-        command_prefix=commands.when_mentioned_or("alpha ", "Alpha "),
+        command_prefix=commands.when_mentioned_or(bot_prefix, bot_Prefix),
         case_insensitive=True,
         logger=log
     )
