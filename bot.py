@@ -37,7 +37,7 @@ class AlphaBot(commands.Bot):
 
     def user_is_ignored(self, user):
         user_roles = [role.id for role in user.roles]
-        if self.config['ignore_role'] in user_roles:
+        if self.config.get('ignore_role') in user_roles:
             return True
         return False
 
