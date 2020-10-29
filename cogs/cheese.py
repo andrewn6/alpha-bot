@@ -35,3 +35,4 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
 def setup(client):
     """This is called when the cog is loaded via load_extension"""
     client.add_cog(Cheese(client))
+
