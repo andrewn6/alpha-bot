@@ -17,14 +17,6 @@ from utils.config import Config
 from utils.context import AlphaCtx
 import logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s: %(name)s -> %(message)s",
-    datefmt="%H:%M:%S",
-)
-log = logging.getLogger(__name__)
-
-
 class AlphaBot(commands.Bot):
     """
     The main bot class where are the magic happens
@@ -33,14 +25,22 @@ class AlphaBot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config = Config().load()
+        self.log = kwargs.get("logger")
 
 
     async def on_ready(self):
-        log.info(f"{self.user} is in!")
+        self.log.info(f"{self.user} is in!")
 
 
     async def get_context(self, message, *, cls=AlphaCtx):
         return await super().get_context(message, cls=cls)
+
+    def user_is_ignored(self, user):
+        user_roles = [role.id for role in user.roles]
+        if self.config['ignore_role'] in user_roles:
+            return True
+        return False
+
 
     @property
     def module_list(self):
@@ -59,7 +59,7 @@ class AlphaBot(commands.Bot):
                 _output.append(f"[{cog}] already loaded")
             except commands.ExtensionNotLoaded:
                 _output.append(f"[{cog}] not loaded")
-                log.exception(f"Failed to load {cog}")
+                self.log.exception(f"Failed to load {cog}")
         return "\n".join(_output)
 
 
@@ -78,23 +78,35 @@ class AlphaBot(commands.Bot):
         await super().close()
 
 
-# create the alphabot instance
-bot = AlphaBot(
-    command_prefix=commands.when_mentioned_or("alpha ", "Alpha "),
-    case_insensitive=True
-)
+def main():
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s: %(name)s -> %(message)s",
+        datefmt="%H:%M:%S",
+    )
+    log = logging.getLogger(__name__)
+
+    # create the alphabot instance
+    bot = AlphaBot(
+        command_prefix=commands.when_mentioned_or("alpha ", "Alpha "),
+        case_insensitive=True,
+        logger=log
+    )
+
+    @bot.event
+    async def on_ready():
+        main_id = bot.config.get('main_guild')
+        bot.main_guild = bot.get_guild(main_id) or bot.guilds[0]
+        log.info('\nActive in these guilds/servers:')
+        [log.info(g.name) for g in bot.guilds]
+        log.info(f'\nMain guild: {bot.main_guild.name}')
+        log.info('\nAlphabot started successfully')
+        return True
 
 
-@bot.event
-async def on_ready():
-    main_id = bot.config.get('main_guild')
-    bot.main_guild = bot.get_guild(main_id) or bot.guilds[0]
-    print('\nActive in these guilds/servers:')
-    [print(g.name) for g in bot.guilds]
-    print('\nMain guild:', bot.main_guild.name)
-    print('\nAlphabot started successfully')
-    return True
+    bot.run()
+    log.info('Alphabot has terminated')
 
-
-bot.run()
-print('Alphabot has terminated')
+if __name__=="__main__":
+    main()
