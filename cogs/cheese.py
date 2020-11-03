@@ -11,7 +11,8 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, client):
         self.client = client
         self.last_cheese = dt.utcnow()
-        self.chance = 1
+        # TODO: load cheese weight from config
+        self.cheese_weight = (90, 100)
         self.cooldown = 30
         random.seed()
 
@@ -22,13 +23,16 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         if isinstance(msg.channel, DMChannel):
             # Ignore DM
             return
-        if random.randint(1, 100 // self.chance) == 1:
-            if (dt.utcnow() - self.last_cheese).total_seconds() < self.cooldown:
-                return
 
-            cheese = 'A random cheese appeared!'
+        chance_result = random.choices([0,1], cum_weights=self.cheese_weight)[0]
+        self.client.log.debug(f"{chance_result=}")
+        if chance_result:
+            #if (dt.utcnow() - self.last_cheese).total_seconds() < self.cooldown:
+            #    return
+
             await msg.add_reaction('🧀')
-            await msg.channel.send("A wild cheese appeared")
+            message = 'A wild cheese appeared!'
+            await msg.channel.send(message)
             self.last_cheese = dt.utcnow()
 
 
