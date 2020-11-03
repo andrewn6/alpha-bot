@@ -28,7 +28,7 @@ class AlphaBot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config = Config().load()
-        self.log = kwargs.get("logger")
+        self.log = kwargs.get("log")
 
 
     async def on_ready(self):
@@ -115,7 +115,7 @@ def main():
     bot = AlphaBot(
         command_prefix=commands.when_mentioned_or(bot_prefix, bot_Prefix),
         case_insensitive=True,
-        logger=log
+        log=log
     )
 
     @bot.event
