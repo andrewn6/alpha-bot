@@ -1,4 +1,4 @@
-version: "3.8"
+version: "2.4"
 services:
   alphabot:
     build: .
@@ -6,12 +6,6 @@ services:
       - .:/app
     command: bash -c "cd /app && python3 -u bot.py"
     restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: 50M
-        reservations:
-          cpus: "0.25"
-          memory: 20M 
-
+    cpu_count: 1
+    cpu_percent: 50
+    mem_limit: 50m

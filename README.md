@@ -1,7 +1,7 @@
 # Alphabet Discord Bot
 
 ## Requirements
-- [docker-ce 19.03.0+](https://docs.docker.com/get-docker/)
+- [docker-ce 17.12.0+](https://docs.docker.com/get-docker/)
 - [docker-compose 1.18+](https://docs.docker.com/compose/install/)
 
  **You must install these first before you can use the bot as intended**
@@ -26,5 +26,4 @@
       - `docker-compose up -d`
 
 ## TODOs
-
 - Upgrade to Python 3.9
