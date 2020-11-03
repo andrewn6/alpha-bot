@@ -24,3 +24,7 @@
       - `docker-compose up`
     - Background (daemon):
       - `docker-compose up -d`
+
+## TODOs
+
+- Upgrade to Python 3.9
