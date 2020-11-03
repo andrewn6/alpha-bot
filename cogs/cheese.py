@@ -11,8 +11,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, client):
         self.client = client
         self.last_cheese = dt.utcnow()
-        # TODO: load cheese weight from config
-        self.cheese_weight = (90, 100)
+        self.cheese_weight = (100 - self.client.config.get("cheese_weight", 50), 100)
         self.cooldown = 30
         random.seed()
 
