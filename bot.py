@@ -15,7 +15,10 @@ from discord.ext import commands
 from pathlib import Path
 from utils.config import Config
 from utils.context import AlphaCtx
+import json
 import logging
+import logging.config
+import os
 
 class AlphaBot(commands.Bot):
     """
@@ -78,13 +81,31 @@ class AlphaBot(commands.Bot):
         await super().close()
 
 
-def main():
+def setup_logging(filename='logging.json', env_key='LOG_CFG'):
+    """
+    Setup logging configuration
+    """
+    # path = default_path
+    path = os.path.join(os.path.dirname(__file__), filename)
+    # path = filename
+    value = os.getenv(env_key, None)
+    if value:
+        path = value
+    try:
+        if os.path.exists(path):
+            with open(path, 'rt') as f:
+                config = json.load(f)
+                logging.config.dictConfig(config)
+        else:
+            raise FileNotFoundError
+    except Exception as e:
+        print(str(e))
+        print("Unable to load logging config, default to console only")
+        logging.basicConfig(level=logging.INFO)
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s: %(name)s -> %(message)s",
-        datefmt="%H:%M:%S",
-    )
+
+def main():
+    setup_logging()
     log = logging.getLogger(__name__)
 
     # create the alphabot instance
@@ -100,13 +121,18 @@ def main():
     async def on_ready():
         main_id = bot.config.get('main_guild')
         bot.main_guild = bot.get_guild(main_id) or bot.guilds[0]
-        log.info('\nActive in these guilds/servers:')
-        [log.info(g.name) for g in bot.guilds]
-        log.info(f'\nMain guild: {bot.main_guild.name}')
-        log.info('\nAlphabot started successfully')
+        log.info('-'*30)
+        log.info('Active in these guilds/servers:')
+        for g in bot.guilds:
+            log.info(g.name)
+        log.info('-'*30)
+        log.info(f'Main guild: {bot.main_guild.name}')
+        log.info('-'*30)
+        log.info('Alphabot started successfully')
         return True
 
 
+    log.info('Alphabot ready')
     bot.run()
     log.info('Alphabot has terminated')
 
