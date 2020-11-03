@@ -84,6 +84,7 @@ class AlphaBot(commands.Bot):
 def setup_logging(filename='logging.json', env_key='LOG_CFG'):
     """
     Setup logging configuration
+    source: https://docs.python.org/3/library/logging.html
     """
     # path = default_path
     path = os.path.join(os.path.dirname(__file__), filename)
