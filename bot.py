@@ -1,12 +1,11 @@
 """
-Alphabet Discord Bot
+Alpha Discord Bot
 
 This bot helps manage all necessary administration and
-automation for the Alphabet Discord server.
+automation for the Salty Bacon Gamers Discord server.
 
 Author(s):
 Pyro      - https://github.com/Pyroseza
-Agent     - https://github.com/solidassassin
 """
 
 
@@ -37,6 +36,7 @@ class AlphaBot(commands.Bot):
 
     async def get_context(self, message, *, cls=AlphaCtx):
         return await super().get_context(message, cls=cls)
+
 
     def user_is_ignored(self, user):
         user_roles = [role.id for role in user.roles]
@@ -108,7 +108,6 @@ def setup_logging(filename='logging.json', env_key='LOG_CFG'):
 def main():
     setup_logging()
     log = logging.getLogger(__name__)
-
     # create the alphabot instance
     bot_prefix = Config().load().get("prefix", "alpha")+" "
     bot_Prefix = bot_prefix.capitalize()
