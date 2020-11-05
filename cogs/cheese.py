@@ -13,6 +13,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         self.last_cheese = dt.utcnow()
         self.cheese_weight = (100 - self.client.config.get("cheese_weight", 50), 100)
         self.cooldown = 30
+        self.msg_memory = dict()
         random.seed()
 
     @commands.Cog.listener()
@@ -28,7 +29,11 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         if chance_result:
             #if (dt.utcnow() - self.last_cheese).total_seconds() < self.cooldown:
             #    return
-
+            if (msg_id := msg.id) in self.msg_memory.keys():
+                return
+            self.msg_memory[msg_id] = ""
+            self.client.log.info(msg_id)
+            self.client.log.info(self.msg_memory)
             await msg.add_reaction('🧀')
             message = 'A wild cheese appeared!'
             await msg.channel.send(message)
