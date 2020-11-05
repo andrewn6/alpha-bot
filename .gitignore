@@ -1,2 +1,4 @@
 config.json
+# ignore venv
+.venv
 __pycache__
