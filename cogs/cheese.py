@@ -32,8 +32,6 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
             if (msg_id := msg.id) in self.msg_memory.keys():
                 return
             self.msg_memory[msg_id] = ""
-            self.client.log.info(msg_id)
-            self.client.log.info(self.msg_memory)
             await msg.add_reaction('🧀')
             message = 'A wild cheese appeared!'
             await msg.channel.send(message)
