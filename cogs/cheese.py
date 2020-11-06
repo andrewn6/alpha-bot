@@ -14,7 +14,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
 
     def __init__(self, client):
         self.client = client
-        self.DEBUG = self.client.config.get("debug",False)
+        self.DEBUG = self.client.config.get("debug", False)
         self.cheese_emoji = u"\U0001F9C0"
         self.thumbup_emoji = u"\U0001F44D"
         self.thumbdown_emoji = u"\U0001F44E"
@@ -38,15 +38,15 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
                 self.client.log.info(f"{await self.list_current_store_users()}")
 
     async def list_current_store_users(self):
-        output=[]
+        output = []
         for k, v in self.scores.items():
-                output.append(f"{await self.client.fetch_user(int(k))}: {v}")
+            output.append(f"{await self.client.fetch_user(int(k))}: {v}")
         return output
 
     def load_memory(self):
         try:
             with open(self.store_file, 'r', encoding='utf-8') as f:
-                return defaultdict(int, json.load(f))
+                return json.load(f)
         except Exception as e:
             self.client.log.warning(
                 f"Unable to load cheese memory from file! : {e}")
