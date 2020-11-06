@@ -42,7 +42,13 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
                 await msg.channel.send('👎')
             else:
                 await msg.channel.send('👍')
-                await msg.channel.send(f"Cheeses collected: {self.scores}")
+                await msg.channel.send("Cheeses collected:")
+                message = []
+                for k,v in self.scores.items():
+                    message.append(f"{client.get_user(k)}: {v}")
+                await msg.channel.send("\n".join(message))
+
+
             self.last_cheese = dt.utcnow()
 
 
