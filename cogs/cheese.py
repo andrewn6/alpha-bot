@@ -37,10 +37,14 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
             if self.DEBUG:
                 self.client.log.info(f"{await self.list_current_store_users()}")
 
-    async def list_current_store_users(self):
+    async def list_current_store_users(self, limit=5):
         output = []
-        for k, v in self.scores.items():
-            output.append(f"{await self.client.fetch_user(int(k))}: {v}")
+        counter = 1
+        for k, v in sorted(self.scores.items(), key=lambda x: x[1], reverse=True):
+            output.append(f"{counter}. {await self.client.fetch_user(int(k))}: {v}")
+            if counter > limit:
+                break
+            counter += 1
         return output
 
     def load_memory(self):
