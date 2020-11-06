@@ -71,8 +71,6 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
             return message_store
         else:
             message_store += f"{self.thumbup_emoji}\n"
-            message_store += "Cheeses collected:\n"
-            message_store += "\n".join(await self.list_current_store_users())
             return message_store
 
     @commands.Cog.listener()
@@ -89,6 +87,13 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
                 return
             await self.add_cheese(client, msg)
             self.last_cheese = dt.utcnow()
+
+    @commands.command()
+    async def scores(self, ctx, *, limit=5):
+        """Get cheese scores"""
+        scores = "Cheeses collected:\n"
+        scores += "\n".join(await self.list_current_store_users())
+        await ctx.send(scores)
 
 
 def setup(client):
