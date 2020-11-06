@@ -14,6 +14,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
 
     def __init__(self, client):
         self.client = client
+        self.DEBUG = True
         self.cheese_emoji = u"\U0001F9C0"
         self.thumbup_emoji = u"\U0001F44D"
         self.thumbdown_emoji = u"\U0001F44E"
@@ -29,9 +30,18 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     async def save_memory(self):
         try:
             with open(self.store_file, 'w', encoding='utf-8') as f:
-                json.dump(self.scores, f)
+                json.dump(dict(self.scores), f)
         except Exception as e:
             self.client.log.warning(f"Unable to save cheese memory! : {e}")
+        finally:
+            if self.DEBUG:
+                self.client.log.info(f"{await self.list_current_store_users()}")
+
+    async def list_current_store_users(self):
+        output=[]
+        for k, v in self.scores.items():
+                output.append(f"{await self.client.fetch_user(int(k))}: {v}")
+        return output
 
     def load_memory(self):
         try:
@@ -54,7 +64,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         message_store = ""
         try:
             reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
-            self.scores[user.id] += 1
+            self.scores[str(user.id)] += 1
             await self.save_memory()
         except asyncio.TimeoutError:
             message_store += self.thumbdown_emoji
@@ -62,10 +72,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         else:
             message_store += f"{self.thumbup_emoji}\n"
             message_store += "Cheeses collected:\n"
-            message = []
-            for k, v in self.scores.items():
-                message.append(f"{client.get_user(k)}: {v}")
-            message_store += "\n".join(message)
+            message_store += "\n".join(await self.list_current_store_users())
             return message_store
 
     @commands.Cog.listener()
