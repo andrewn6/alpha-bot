@@ -14,7 +14,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
 
     def __init__(self, client):
         self.client = client
-        self.DEBUG = True
+        self.DEBUG = self.client.config.get("debug",False)
         self.cheese_emoji = u"\U0001F9C0"
         self.thumbup_emoji = u"\U0001F44D"
         self.thumbdown_emoji = u"\U0001F44E"
