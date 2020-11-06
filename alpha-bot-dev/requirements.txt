@@ -1,0 +1,4 @@
+discord.py
+Pillow
+fuzzywuzzy
+python-Levenshtein

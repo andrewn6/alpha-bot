@@ -1,0 +1,11 @@
+version: "2.4"
+services:
+  alphabot:
+    build: .
+    volumes:
+      - .:/app
+    command: bash -c "cd /app && python3 -u bot.py"
+    restart: always
+    cpu_count: 1
+    cpu_percent: 50
+    mem_limit: 50m
