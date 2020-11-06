@@ -3,7 +3,7 @@ It drops random cheese for people to pick up
 """
 from collections import defaultdict
 from datetime import datetime as dt
-from discord import Activity, DMChannel, Client, Message
+from discord import Activity, Client, DMChannel, Embed, Message
 from discord.ext import commands
 import asyncio
 import json
@@ -95,9 +95,11 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     @commands.command()
     async def scores(self, ctx, *, limit=5):
         """Get cheese scores"""
-        scores = "Cheeses collected:\n"
-        scores += "\n".join(await self.list_current_store_users())
-        await ctx.send(scores)
+        scores = "\n".join(await self.list_current_store_users())
+        e = Embed(title='Cheese collected',
+                  description=scores,
+                  color=0xFF8000)
+        await ctx.send(embed=e)
 
 
 def setup(client):
